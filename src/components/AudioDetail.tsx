@@ -37,8 +37,6 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                 <div>
                     <ReactAudioPlayer
                     src= {currentAudio.url}
-                    // src = "https://www.sample-videos.com/audio/mp3/crowd-cheering.mp3"
-                    // src = "https://msaaudiobankblob.blob.core.windows.net/audio/1e763161-4770-413c-9d02-db466aecf30a.wav"
                     controls />
                 </div>
                     {/* <img src={currentAudio.url}/> */}
