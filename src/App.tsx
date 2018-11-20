@@ -125,9 +125,9 @@ class App extends React.Component<{}, IState> {
 	private uploadAudio() {
 		const titleInput = document.getElementById("audio-title-input") as HTMLInputElement
 		const tagInput = document.getElementById("audio-tag-input") as HTMLInputElement
-		const imageFile = this.state.uploadFileList[0]
+		const audioFile = this.state.uploadFileList[0]
 
-		if (titleInput === null || tagInput === null || imageFile === null) {
+		if (titleInput === null || tagInput === null || audioFile === null) {
 			return;
 		}
 
@@ -138,7 +138,7 @@ class App extends React.Component<{}, IState> {
 		const formData = new FormData()
 		formData.append("Title", title)
 		formData.append("Tags", tag)
-		formData.append("image", imageFile)
+		formData.append("Audio", audioFile)
 
 		fetch(url, {
 			body: formData,
