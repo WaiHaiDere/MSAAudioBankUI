@@ -36,8 +36,9 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                 <div className="row audio-img">
                 <div>
                     <ReactAudioPlayer
-                    // src= {currentAudio.url}
-                    src = "https://www.sample-videos.com/audio/mp3/crowd-cheering.mp3"
+                    src= {currentAudio.url}
+                    // src = "https://www.sample-videos.com/audio/mp3/crowd-cheering.mp3"
+                    // src = "https://msaaudiobankblob.blob.core.windows.net/audio/1e763161-4770-413c-9d02-db466aecf30a.wav"
                     controls />
                 </div>
                     {/* <img src={currentAudio.url}/> */}
@@ -84,7 +85,7 @@ export default class AudioDetail extends React.Component<IProps, IState> {
 
     // DELETE audio
     private deleteAudio(id: any) {
-        const url = "http://phase2apitest.azurewebsites.net/api/meme/" + id
+        const url = "https://msaaudiobankapi.azurewebsites.net/api/Audio/" + id
 
 		fetch(url, {
 			method: 'DELETE'
@@ -110,18 +111,16 @@ export default class AudioDetail extends React.Component<IProps, IState> {
 		}
 
         const currentAudio = this.props.currentAudio
-        const url = "http://phase2apitest.azurewebsites.net/api/meme/" + currentAudio.id
+        const url = "https://msaaudiobankapi.azurewebsites.net/api/Audio/" + currentAudio.id
         const updatedTitle = titleInput.value
         const updatedTag = tagInput.value
 		fetch(url, {
 			body: JSON.stringify({
-                "height": currentAudio.height,
                 "id": currentAudio.id,
                 "tags": updatedTag,
                 "title": updatedTitle,
                 "uploaded": currentAudio.uploaded,
-                "url": currentAudio.url,
-                "width": currentAudio.width
+                "url": currentAudio.url
             }),
 			headers: {'cache-control': 'no-cache','Content-Type': 'application/json'},
 			method: 'PUT'

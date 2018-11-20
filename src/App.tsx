@@ -94,7 +94,7 @@ class App extends React.Component<{}, IState> {
 
 	// GET audio
 	private fetchAudio(tag: any) {
-		let url = "http://phase2apitest.azurewebsites.net/api/meme"
+		let url = "https://msaaudiobankapi.azurewebsites.net/api/Audio"
 		if (tag !== "") {
 			url += "/tag?=" + tag
 		}
@@ -133,7 +133,7 @@ class App extends React.Component<{}, IState> {
 
 		const title = titleInput.value
 		const tag = tagInput.value
-		const url = "http://phase2apitest.azurewebsites.net/api/meme/upload"
+		const url = "https://msaaudiobankapi.azurewebsites.net/api/Audio/upload"
 
 		const formData = new FormData()
 		formData.append("Title", title)
