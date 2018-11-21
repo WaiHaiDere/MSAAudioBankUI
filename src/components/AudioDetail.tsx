@@ -6,7 +6,8 @@ import Button from '@material-ui/core/Button';
 
 
 interface IProps {
-    currentAudio: any
+    currentAudio: any,
+    authenticated: boolean,
 }
 
 interface IState {
@@ -26,6 +27,7 @@ export default class AudioDetail extends React.Component<IProps, IState> {
 
 	public render() {
         const currentAudio = this.props.currentAudio
+        const authenticated = this.props.authenticated
         const { open } = this.state;
 		return (
 			<div className="container audio-wrapper">
@@ -42,13 +44,23 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                     <ReactAudioPlayer className="audio-player"
                     src= {currentAudio.url}
                     controls />
-                </div>
+                </div>&nbsp;
                 <div className="row audio-done-button">
-                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>
-                    <p className="spacing">s</p>
-                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.onOpenModal}>Edit </Button>
-                    <p className="spacing">s</p>
-                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.deleteAudio.bind(this, currentAudio.id)}>Delete </Button>
+                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp;
+                    <p className="spacing">s</p>&nbsp;
+                    { (authenticated) ?
+                    <div className="conditional-buttons">
+                        <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.onOpenModal}>Edit </Button>&nbsp;
+                        <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.deleteAudio.bind(this, currentAudio.id)}>Delete </Button>
+                    </div>
+                    : ""}
+                    { (!authenticated) ?
+                    <div className="conditional-buttons">
+                        <Button className="btn btn-primary btn-action" variant="contained" disabled color="primary" onClick={this.onOpenModal}>Edit </Button>&nbsp;
+                        <Button className="btn btn-primary btn-action" variant="contained" disabled color="primary" onClick={this.deleteAudio.bind(this, currentAudio.id)}>Delete </Button>
+                    </div>
+                    : "" }
+                    
                 </div>
                 <Modal open={open} onClose={this.onCloseModal}>
                     <form>

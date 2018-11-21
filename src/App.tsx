@@ -8,7 +8,6 @@ import * as Webcam from 'react-webcam';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import SearchByTag from './components/SearchByTag';
-import StickyFooter from 'react-sticky-footer';
 import Button from '@material-ui/core/Button';
 
 
@@ -123,13 +122,19 @@ class App extends React.Component<{}, IState> {
 	}
 
 	public render() {
-		const { openUpload, chatOpen, loginOpen} = this.state;
+		const { openUpload, chatOpen, loginOpen, authenticated} = this.state;
 		return (
 		<div>
 			<div className="header-wrapper">
 				<div className="container header">
 				<div className="title-container">
-					<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp; <Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.onLoginOpenModal}>Login</Button>
+					<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp; 
+					{(!authenticated) ?
+					<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.onLoginOpenModal}>Login</Button>
+					: ""}
+					{(authenticated) ?
+					<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.logOut}>Log Out</Button>
+					: ""}
 				</div>
 					<SearchByTag searchByTag={this.fetchAudio} />
 					<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
@@ -154,20 +159,10 @@ class App extends React.Component<{}, IState> {
 					</div>
 				</div>
 			</div>
-			<StickyFooter
-				bottomThreshold={50}
-				normalStyles={{
-				backgroundColor: "#999999",
-				padding: "2rem"
-				}}
-				stickyStyles={{
-				backgroundColor: "rgba(255,255,255,.8)",
-				padding: "2rem"
-				}}
-			>
+			<div className = "footer">
    			{/* <Button variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp; */}
-			<AudioDetail currentAudio={this.state.currentAudio} />
-			</StickyFooter>
+			<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} />
+			</div>
 			<Modal open={openUpload} onClose={this.onCloseModal}>
 				<form>
 					<div className="form-group">
@@ -216,6 +211,9 @@ class App extends React.Component<{}, IState> {
 	// 	this.setState({chatOpen: true})
 	// }
 
+	private logOut =() => {
+		this.setState({authenticated: false});
+	}
 	private onCloseChatModal =() => {
 		this.setState({chatOpen: false})
 	}
@@ -312,7 +310,7 @@ class App extends React.Component<{}, IState> {
 	private authenticate() {
 		const screenshot = this.state.refCamera.current.getScreenshot();
 		this.getFaceRecognitionResult(screenshot);
-		this.setState({ loginOpen: false });
+		
 	}
 	
 	private skipAuthenticate(){
@@ -345,6 +343,7 @@ class App extends React.Component<{}, IState> {
 						this.setState({predictionResult: json.predictions[0] })
 						if (this.state.predictionResult.probability > 0.7) {
 							this.setState({authenticated: true})
+							this.setState({ loginOpen: false });
 						} else {
 							this.setState({authenticated: false})
 							
