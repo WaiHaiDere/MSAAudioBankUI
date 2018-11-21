@@ -143,15 +143,7 @@ class App extends React.Component<{}, IState> {
 			<div className="container">
 				<div className="row">
 					<div className="col-7">
-						{/* <AudioDetail currentAudio={this.state.currentAudio} /> */}
-						
-						{/* <div>
-							<ThemeProvider theme={chatBotTheme}>
-							<ChatBot botDelay='400'
-								steps={chatSteps}
-							/>
-							</ThemeProvider>
-						</div> */}
+				
 					
 					</div>
 					<div className="col-5">
@@ -160,8 +152,13 @@ class App extends React.Component<{}, IState> {
 				</div>
 			</div>
 			<div className = "footer">
-   			{/* <Button variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp; */}
-			<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} />
+				<div className="botButton">
+				<Button className="botButton" variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp;
+				</div>
+				<div className="footerInfo">
+				<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} />
+				</div>
+				
 			</div>
 			<Modal open={openUpload} onClose={this.onCloseModal}>
 				<form>
@@ -207,9 +204,9 @@ class App extends React.Component<{}, IState> {
 		);
 	}
 
-	// private onOpenChatModal =() => {
-	// 	this.setState({chatOpen: true})
-	// }
+	private onOpenChatModal =() => {
+		this.setState({chatOpen: true})
+	}
 
 	private logOut =() => {
 		this.setState({authenticated: false});

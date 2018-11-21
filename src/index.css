@@ -179,4 +179,9 @@ body{
   justify-content: center;
   width: 200px;
 }
+.botButton{
+  float: left;
+  margin-top: 15px;
+  margin-left: 15px;
+}
 
