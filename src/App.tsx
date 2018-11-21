@@ -5,10 +5,80 @@ import AudioDetail from './components/AudioDetail';
 import AudioList from './components/AudioList';
 import AudioBankLogo from './audiobanklogo.png';
 import * as Webcam from 'react-webcam';
-import AudioRecorder from 'react-audio-recorder';
 import ChatBot from 'react-simple-chatbot';
+import { ThemeProvider } from 'styled-components';
+import SearchByTag from './components/SearchByTag';
+import Button from '@material-ui/core/Button';
+import StickyFooter from 'react-sticky-footer';
 
+const chatBotTheme = {
+	background: '#f5f8fb',
+	fontFamily: "Lucida Console",
+	headerBgColor: '#2600ff',
+	headerFontColor: '#fff',
+	headerFontSize: '15px',
+	botBubbleColor: '#2600ff',
+	botFontColor: '#fff',
+	userBubbleColor: '#fff',
+	userFontColor: '#a3a3a3',
+	
+  };
 
+  const chatSteps=[
+	{
+		id: '1',
+		message: 'What do you need help with?',
+		trigger: '2',
+	},
+	{
+		id: '2',
+		options: [
+		{ value: 1, label: 'What is this website for?', trigger: '4' },
+		{ value: 2, label: 'How do I upload?', trigger: '3' },
+		{ value: 3, label: 'How do I download a file?', trigger: '5' },
+		],
+	},
+	{
+		id: '3',
+		message: 'Press the "Add Audio" button at the top right of the page and fill in the required fields.',
+		trigger: '8',
+	},
+	{
+		id: '4',
+		message: 'This app is made for the submission for MSA 2018',
+		trigger: '1',
+	},
+	{
+		id: '5',
+		message: 'After selecting a file from the table on the right, you can press the "Download" button to download the file',
+		trigger: '1',
+	},
+	{
+		id: '6',
+		message: 'Don\'t worry, you can change that after you have submitted but only if you have signed in to the page',
+		trigger: '9'
+	},
+	{
+		id: '7',
+		message: 'After selecting a file from the table on the right, press the "Edit" button to change the Title or Tag of the file',
+		trigger: '1',
+	},
+	{
+		id:'8',
+		options: [
+			{ value: 1, label: 'I entered wrong information!', trigger: '6' },
+			{ value: 2, label: 'Thank you', trigger: '1' },
+		],
+
+	},
+	{
+		id:'9',
+		options: [
+			{ value: 1, label: 'How do I do that?', trigger: '7' },
+			{ value: 2, label: 'Thank you', trigger: '1' },
+		],
+	},
+]
 
 interface IState {
 	currentAudio: any,
@@ -18,6 +88,7 @@ interface IState {
 	authenticated: boolean,
 	refCamera: any,
 	predictionResult: any,
+	chatOpen: boolean,
 	
 	// recordOpen: any,
 }
@@ -33,6 +104,7 @@ class App extends React.Component<{}, IState> {
 			authenticated: false,
 			refCamera: React.createRef(),
 			predictionResult: null,
+			chatOpen: false,
 			
 		}     
 		
@@ -43,10 +115,11 @@ class App extends React.Component<{}, IState> {
 		this.uploadAudio = this.uploadAudio.bind(this)
 		this.authenticate = this.authenticate.bind(this)
 		this.skipAuthenticate = this.skipAuthenticate.bind(this)
+		this.onCloseChatModal= this.onCloseChatModal.bind(this)
 	}
 
 	public render() {
-		const { open, authenticated} = this.state;
+		const { open, authenticated, chatOpen} = this.state;
 		if (!(this.state.authenticated)) {
 			return (
 				<div>
@@ -57,8 +130,8 @@ class App extends React.Component<{}, IState> {
 							ref={this.state.refCamera}
 						/>
 						<div className="row nav-row">
-							<div className="btn btn-primary bottom-button" onClick={this.authenticate}>Login</div>
-							<div className="btn btn-primary bottom-button" onClick={this.skipAuthenticate}>Skip For Now</div>
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
 						</div>
 					</Modal> : ""}
 				</div>
@@ -68,72 +141,45 @@ class App extends React.Component<{}, IState> {
 		<div>
 			<div className="header-wrapper">
 				<div className="container header">
+				<div className="title-container">
 					<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp;
-					{/* <div className="btn btn-primary btn-action btn-add" onClick={this.onOpenRecordModal}>Create Audio</div> */}
-					<div className="btn btn-primary btn-action btn-add" onClick={this.onOpenModal}>Add Audio</div>
+				</div>
+					<SearchByTag searchByTag={this.fetchAudio} />
+					<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
 				</div>
 			</div>
 			<div className="container">
 				<div className="row">
 					<div className="col-7">
-						<AudioDetail currentAudio={this.state.currentAudio} />
-						<AudioRecorder downloadable={true} />
+						{/* <AudioDetail currentAudio={this.state.currentAudio} /> */}
+						
+						{/* <div>
+							<ThemeProvider theme={chatBotTheme}>
+							<ChatBot botDelay='400'
+								steps={chatSteps}
+							/>
+							</ThemeProvider>
+						</div> */}
+					
 					</div>
 					<div className="col-5">
-						<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} searchByTag={this.fetchAudio}/>
+						<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} />
 					</div>
 				</div>
 			</div>
-			<div>
-				<ChatBot
-					steps={[
-						{
-							id: '1',
-							message: 'What do you need help with?',
-							trigger: '2',
-						  },
-						  {
-							id: '2',
-							options: [
-							  { value: 1, label: 'What is this website for?', trigger: '4' },
-							  { value: 2, label: 'How do I upload?', trigger: '3' },
-							  { value: 3, label: 'How do I download a file?', trigger: '5' },
-							],
-						  },
-						  {
-							id: '3',
-							message: 'Press the "Add Audio" button at the top left of the page and fill in the required fields.',
-							options: [
-								{ value: 1, label: 'I entered wrong information!', trigger: '6' },
-								{ value: 2, label: 'Thank you', trigger: '1' },
-							],
-						  },
-						  {
-							id: '4',
-							message: 'This app is made for the submission for MSA 2018',
-							trigger: '1',
-						  },
-						  {
-							id: '5',
-							message: 'After selecting a file from the table on the right, you can press the "Download" button to download the file',
-							trigger: '1',
-						  },
-						  {
-							id: '6',
-							message: 'Don\'t worry, you can change that after you have submitted but only if you have signed in to the page',
-							options: [
-								{ value: 1, label: 'How do I do that?', trigger: '7' },
-								{ value: 2, label: 'Thank you', trigger: '1' },
-							],
-						  },
-						  {
-							id: '7',
-							message: 'After selecting a file from the table on the right, press the "Edit" button to change the Title or Tag of the file',
-							trigger: '1',
-						  },
-					]}
-				/>
-			</div>
+			<StickyFooter
+				bottomThreshold={50}
+				normalStyles={{
+				backgroundColor: "#999999",
+				padding: "2rem"
+				}}
+				stickyStyles={{
+				backgroundColor: "rgba(255,255,255,.8)",
+				padding: "2rem"
+				}}
+			>
+   			<Button variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp;<AudioDetail currentAudio={this.state.currentAudio} />
+			</StickyFooter>
 			<Modal open={open} onClose={this.onCloseModal}>
 				<form>
 					<div className="form-group">
@@ -154,22 +200,27 @@ class App extends React.Component<{}, IState> {
 					<button type="button" className="btn" onClick={this.uploadAudio}>Upload</button>
 				</form>
 			</Modal>
-			{/* <Modal open={recordOpen} onClose={this.onCloseRecordModal}>
-			
-			</Modal> */}
-
+			<Modal open={chatOpen} onClose={this.onCloseChatModal}>
+			<div>
+							<ThemeProvider theme={chatBotTheme}>
+							<ChatBot botDelay='400'
+								steps={chatSteps}
+							/>
+							</ThemeProvider>
+			</div>
+			</Modal>
 		</div>
 		);
 		}
 	}
 
-	// private onOpenRecordModal =() => {
-	// 	this.setState({recordOpen: true})
-	// }
+	private onOpenChatModal =() => {
+		this.setState({chatOpen: true})
+	}
 
-	// private onCloseRecordModal =() => {
-	// 	this.setState({recordOpen: false})
-	// }
+	private onCloseChatModal =() => {
+		this.setState({chatOpen: false})
+	}
 	// Modal open
 	private onOpenModal = () => {
 		this.setState({ open: true });
@@ -191,7 +242,7 @@ class App extends React.Component<{}, IState> {
 	private fetchAudio(tag: any) {
 		let url = "https://msaaudiobankapi.azurewebsites.net/api/Audio"
 		if (tag !== "") {
-			url += "/tag?=" + tag
+			url += "/tag/" + tag
 		}
         fetch(url, {
             method: 'GET'

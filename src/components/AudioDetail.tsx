@@ -1,6 +1,8 @@
 import * as React from "react";
 import Modal from 'react-responsive-modal';
 import ReactAudioPlayer from 'react-audio-player';
+import Button from '@material-ui/core/Button';
+
 
 
 interface IProps {
@@ -27,25 +29,26 @@ export default class AudioDetail extends React.Component<IProps, IState> {
         const { open } = this.state;
 		return (
 			<div className="container audio-wrapper">
-                <div className="row audio-heading">
-                    <b>{currentAudio.title}</b>&nbsp; ({currentAudio.tags})
+                <div className="audio-details">
+                    <div className="row audio-heading">
+                        <b>{currentAudio.title}</b>&nbsp; ({currentAudio.tags})
+                    </div>
+                    <div className="row audio-date">
+                        {currentAudio.uploaded}
+                    </div>
                 </div>
-                <div className="row audio-date">
-                    {currentAudio.uploaded}
-                </div>
-                <div className="row audio-img">
-                <div>
-                    <ReactAudioPlayer
+                {/* <p className="spacing">ssssss</p> */}
+                <div className="audio-container">
+                    <ReactAudioPlayer className="audio-player"
                     src= {currentAudio.url}
                     controls />
                 </div>
-                    {/* <img src={currentAudio.url}/> */}
-                </div>
-                
                 <div className="row audio-done-button">
-                    <div className="btn btn-primary btn-action" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </div>
-                    <div className="btn btn-primary btn-action" onClick={this.onOpenModal}>Edit </div>
-                    <div className="btn btn-primary btn-action" onClick={this.deleteAudio.bind(this, currentAudio.id)}>Delete </div>
+                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>
+                    <p className="spacing">s</p>
+                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.onOpenModal}>Edit </Button>
+                    <p className="spacing">s</p>
+                    <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.deleteAudio.bind(this, currentAudio.id)}>Delete </Button>
                 </div>
                 <Modal open={open} onClose={this.onCloseModal}>
                     <form>

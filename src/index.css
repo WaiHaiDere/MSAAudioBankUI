@@ -16,6 +16,7 @@ body{
   align-items: center;
   justify-content: left;
   font-family: "Lucida Console", Monaco, monospace;
+  color: #111111;
   font-weight: bold;
   position: relative;
   padding-top: 10px;
@@ -26,6 +27,7 @@ body{
   padding-top:20px;
   padding-left: 30px;
   padding-right: 30px;
+  
 }
 
 .audio-heading {
@@ -63,11 +65,13 @@ body{
 
 .audio-done-button {
   display: flex;
-  align-items: left;
-  justify-content: left;
+  align-items: right;
+  justify-content: right;
   font-weight: normal;
   font-size: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
+  padding-left: 220px;
+
 }
 
 .btn-action{
@@ -95,11 +99,12 @@ body{
 /* Audio List */
 .audio-list-wrapper {
   padding-top:20px;
+  width: 1000px;
 }
 
 .audio-list-table {
   margin-top: 20px;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 250px);
   overflow-y: scroll;
   cursor: pointer;
 }
@@ -110,6 +115,52 @@ body{
   color: white;
 }
 
+#searchButton{
+  width: 20%;
+}
+
+.search-container {
+  width:100%;
+  text-align: right;
+  align-items: right;
+  justify-content: right;
+
+}
+
+.title-container {
+  width:100%;
+}
+
+#search-tag-button {
+  padding-bottom: 0em;
+  padding-right: 1em;
+}
+
+#search-tag-textbox{
+  padding-top: 1em;
+  height: 8px  ;
+}
+.spacing{
+  opacity: 0;
+}
+
+.audio-player{
+  background-color: #a3a3a3;
+  fill: #2600ff;
+  float: left;
+  width: 300px;
+  
+}
+.audio-container {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.audio-details {
+  float: left;
+  padding-right: 50px;
+}
 
 
 
