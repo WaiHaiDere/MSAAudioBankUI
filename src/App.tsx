@@ -8,8 +8,9 @@ import * as Webcam from 'react-webcam';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import SearchByTag from './components/SearchByTag';
-import Button from '@material-ui/core/Button';
 import StickyFooter from 'react-sticky-footer';
+import Button from '@material-ui/core/Button';
+
 
 const chatBotTheme = {
 	background: '#f5f8fb',
@@ -83,12 +84,13 @@ const chatBotTheme = {
 interface IState {
 	currentAudio: any,
 	audio: any[],
-	open: boolean,
+	openUpload: boolean,
 	uploadFileList: any,
 	authenticated: boolean,
 	refCamera: any,
 	predictionResult: any,
 	chatOpen: boolean,
+	loginOpen: boolean,
 	
 	// recordOpen: any,
 }
@@ -99,12 +101,13 @@ class App extends React.Component<{}, IState> {
         this.state = {
 			currentAudio: {"id":0, "title":"Loading ","url":"","tags":"⚆ _ ⚆","uploaded":"","width":"0","height":"0"},
 			audio: [],
-			open: false,
+			openUpload: false,
 			uploadFileList: null,
 			authenticated: false,
 			refCamera: React.createRef(),
 			predictionResult: null,
 			chatOpen: false,
+			loginOpen: false,
 			
 		}     
 		
@@ -116,33 +119,17 @@ class App extends React.Component<{}, IState> {
 		this.authenticate = this.authenticate.bind(this)
 		this.skipAuthenticate = this.skipAuthenticate.bind(this)
 		this.onCloseChatModal= this.onCloseChatModal.bind(this)
+		this.onLoginCloseModal = this.onLoginCloseModal.bind(this)
 	}
 
 	public render() {
-		const { open, authenticated, chatOpen} = this.state;
-		if (!(this.state.authenticated)) {
-			return (
-				<div>
-					<Modal open={!authenticated} onClose={this.authenticate} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
-						<Webcam
-							audio={false}
-							screenshotFormat="image/jpeg"
-							ref={this.state.refCamera}
-						/>
-						<div className="row nav-row">
-							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
-							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
-						</div>
-					</Modal> : ""}
-				</div>
-			)
-		} else {
+		const { openUpload, chatOpen, loginOpen} = this.state;
 		return (
 		<div>
 			<div className="header-wrapper">
 				<div className="container header">
 				<div className="title-container">
-					<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp;
+					<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp; <Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.onLoginOpenModal}>Login</Button>
 				</div>
 					<SearchByTag searchByTag={this.fetchAudio} />
 					<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
@@ -178,9 +165,10 @@ class App extends React.Component<{}, IState> {
 				padding: "2rem"
 				}}
 			>
-   			<Button variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp;<AudioDetail currentAudio={this.state.currentAudio} />
+   			{/* <Button variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp; */}
+			<AudioDetail currentAudio={this.state.currentAudio} />
 			</StickyFooter>
-			<Modal open={open} onClose={this.onCloseModal}>
+			<Modal open={openUpload} onClose={this.onCloseModal}>
 				<form>
 					<div className="form-group">
 						<label>Audio Title</label>
@@ -209,26 +197,44 @@ class App extends React.Component<{}, IState> {
 							</ThemeProvider>
 			</div>
 			</Modal>
+			<Modal open={loginOpen} onClose={this.onLoginCloseModal} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
+				<Webcam
+					audio={false}
+					screenshotFormat="image/jpeg"
+					ref={this.state.refCamera}
+				/>
+				<div className="row nav-row">
+					<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
+					<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+				</div>
+			</Modal>
 		</div>
 		);
-		}
 	}
 
-	private onOpenChatModal =() => {
-		this.setState({chatOpen: true})
-	}
+	// private onOpenChatModal =() => {
+	// 	this.setState({chatOpen: true})
+	// }
 
 	private onCloseChatModal =() => {
 		this.setState({chatOpen: false})
 	}
 	// Modal open
 	private onOpenModal = () => {
-		this.setState({ open: true });
+		this.setState({ openUpload: true });
 	  };
 	
 	// Modal close
 	private onCloseModal = () => {
-		this.setState({ open: false });
+		this.setState({ openUpload: false });
+	};
+
+	// Modal close
+	private onLoginCloseModal = () => {
+		this.setState({ loginOpen: false });
+	};
+	private onLoginOpenModal = () => {
+		this.setState({ loginOpen: true });
 	};
 	
 	// Change selected audio
@@ -306,10 +312,11 @@ class App extends React.Component<{}, IState> {
 	private authenticate() {
 		const screenshot = this.state.refCamera.current.getScreenshot();
 		this.getFaceRecognitionResult(screenshot);
+		this.setState({ loginOpen: false });
 	}
 	
 	private skipAuthenticate(){
-		this.setState({authenticated: true})
+		this.setState({ loginOpen: false });
 	}
 
 	// Call custom vision model
