@@ -243,7 +243,7 @@ class App extends React.Component<{}, IState> {
 	private fetchAudio(tag: any) {
 		let url = "https://msaaudiobankapi.azurewebsites.net/api/Audio"
 		if (tag !== "") {
-			url += "/tag/" + tag
+			url += "/tag?tag=" + tag
 		}
         fetch(url, {
             method: 'GET'
