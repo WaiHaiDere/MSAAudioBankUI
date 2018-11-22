@@ -349,8 +349,10 @@ class App extends React.Component<{}, IState> {
 	}
 
 	public fbAuthenticated =(response: any) => {
-		this.setState({authenticated: true});
-		this.setState({loginOpen: false});
+		if(!(response.status == "unknown")) {
+			this.setState({authenticated: true});
+			this.setState({loginOpen: false});
+		}
 	}
 	private onOpenChatModal =() => {
 		this.setState({chatOpen: true})
