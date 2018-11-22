@@ -218,5 +218,23 @@ body{
 }
 
 .nav-row{
-  width: 480px; 
+  width: 640px; 
+  margin-right: 0px;
+  height: 50px;
+}
+.login-button-container{
+  float: left;
+}
+
+.fb-login-button {
+  width: 300px; 
+  height: 40px;
+  color: #fff;
+  background-color: #3754f8;
+  border-radius: 5px;
+}
+.fb-login-button-container {
+  width:300px;
+  height:40px;
+  float: right;
 }

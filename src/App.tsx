@@ -11,6 +11,7 @@ import SearchByTag from './components/SearchByTag';
 import Button from '@material-ui/core/Button';
 import LiveHelpIcon from '@material-ui/icons/LiveHelpSharp';
 import Switch from '@material-ui/core/Switch';
+import FBLogin from './components/FBLogin'
 
 
 const chatBotTheme = {
@@ -145,7 +146,6 @@ class App extends React.Component<{}, IState> {
 			chatOpen: false,
 			loginOpen: false,
 			isDark: false,
-			
 		}     
 		
 		this.fetchAudio("")
@@ -227,7 +227,7 @@ class App extends React.Component<{}, IState> {
 							<input type="file" onChange={this.handleFileUpload} className="form-control-file" id="audio-image-input" />
 						</div>
 
-						<button type="button" className="btn" onClick={this.uploadAudio}>Upload</button>
+						<Button variant="contained" color="primary" type="button" className="btn" onClick={this.uploadAudio}>Upload</Button>
 					</form>
 				</Modal>
 				<Modal open={chatOpen} onClose={this.onCloseChatModal}>
@@ -246,8 +246,13 @@ class App extends React.Component<{}, IState> {
 						ref={this.state.refCamera}
 					/>
 					<div className="nav-row">
-						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>&nbsp;
-						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+					<div className="login-button-container">
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button> &nbsp;
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+							</div>&nbsp;
+							<div className="fb-login-button-container">
+							<FBLogin callBack={this.fbAuthenticated}/>
+							</div>
 					</div>
 				</Modal>
 			</div>
@@ -310,7 +315,7 @@ class App extends React.Component<{}, IState> {
 								<input type="file" onChange={this.handleFileUpload} className="form-control-file" id="audio-image-input" />
 							</div>
 	
-							<button type="button" className="btn" onClick={this.uploadAudio}>Upload</button>
+							<Button variant="contained" color="primary" type="button" className="btn" onClick={this.uploadAudio}>Upload</Button>
 						</form>
 					</Modal>
 					<Modal open={chatOpen} onClose={this.onCloseChatModal}>
@@ -329,8 +334,13 @@ class App extends React.Component<{}, IState> {
 							ref={this.state.refCamera}
 						/>
 						<div className="nav-row">
+							<div className="login-button-container">
 							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button> &nbsp;
 							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+							</div>&nbsp;
+							<div className="fb-login-button-container">
+							<FBLogin callBack={this.fbAuthenticated}/>
+							</div>
 						</div>
 					</Modal>
 				</div>
@@ -338,6 +348,10 @@ class App extends React.Component<{}, IState> {
 		}
 	}
 
+	public fbAuthenticated =(response: any) => {
+		this.setState({authenticated: true});
+		this.setState({loginOpen: false});
+	}
 	private onOpenChatModal =() => {
 		this.setState({chatOpen: true})
 	}
@@ -386,7 +400,7 @@ class App extends React.Component<{}, IState> {
         .then(json => {
 			let currentAudio = json[0]
 			if (currentAudio === undefined) {
-				currentAudio = {"id":0, "title":"No audio (╯°□°）╯︵ ┻━┻","url":"","tags":"try a different tag","uploaded":"","width":"0","height":"0"}
+				currentAudio = {"id":0, "title":"No audio found","url":"","tags":"","uploaded":""}
 			}
 			this.setState({
 				currentAudio,
