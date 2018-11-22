@@ -173,7 +173,7 @@ class App extends React.Component<{}, IState> {
 							<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.logOut}>Log Out</Button>
 							: ""}
 						</div>
-						<SearchByTag searchByTag={this.fetchAudio} />
+						<SearchByTag searchByTag={this.fetchAudio} isDark = {this.state.isDark} />
 						<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
 					</div>
 				</div>
@@ -256,7 +256,7 @@ class App extends React.Component<{}, IState> {
 								<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="default" onClick= {this.logOut}>Log Out</Button>
 								: ""}
 							</div>
-							<SearchByTag searchByTag={this.fetchAudio} />
+							<SearchByTag searchByTag={this.fetchAudio} isDark = {this.state.isDark} />
 							<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="default" onClick={this.onOpenModal}>Add Audio</Button>
 						</div>
 					</div>

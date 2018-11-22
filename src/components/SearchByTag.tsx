@@ -5,6 +5,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 interface IProps {
     searchByTag: any,
+    isDark: boolean,
 }
 
 
@@ -15,15 +16,26 @@ export default class SearchByTag extends React.Component<IProps, {}> {
     }
 
 	public render() {
-        
-		return (
-            <div className="search-container"> 
-					<TextField id="search-tag-textbox" variant="outlined" type="text" placeholder="Search By Tag" color="primary"/>
-					<IconButton id="search-tag-button"  aria-label="Search" color="primary" onClick= {this.searchByTag} >
-        				<SearchIcon />
-      				</IconButton>
-			</div>
-		);
+        const isDark = this.props.isDark
+        if(isDark){
+            return (
+                <div className="search-container"> 
+                        <TextField id="search-tag-textbox" variant="outlined" type="text" placeholder="Search By Tag" color="primary"/>
+                        <IconButton id="search-tag-button"  aria-label="Search" color="primary" onClick= {this.searchByTag} >
+                            <SearchIcon />
+                        </IconButton>
+                </div>
+            );
+        } else {
+            return (
+                <div className="search-container"> 
+                        <TextField id="search-tag-textbox" variant="outlined" type="text" placeholder="Search By Tag" color="default"/>
+                        <IconButton id="search-tag-button"  aria-label="Search" color="default" onClick= {this.searchByTag} >
+                            <SearchIcon />
+                        </IconButton>
+                </div>
+            );
+        }
     }
 
     // Search audio by tag
