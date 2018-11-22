@@ -12,6 +12,8 @@ import Button from '@material-ui/core/Button';
 import LiveHelpIcon from '@material-ui/icons/LiveHelpSharp';
 import Switch from '@material-ui/core/Switch';
 import FBLogin from './components/FBLogin'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { Transition } from 'react-transition-group';
 
 
 const chatBotTheme = {
@@ -84,7 +86,6 @@ const chatBotTheme = {
 			{ value: 1, label: 'I entered wrong information!', trigger: '6' },
 			{ value: 2, label: 'Thank you', trigger: '11' },
 		],
-
 	},
 	{
 		id:'9',
@@ -128,8 +129,8 @@ interface IState {
 	chatOpen: boolean,
 	loginOpen: boolean,
 	isDark: boolean,
-	
-	// recordOpen: any,
+	cameraLoginFail: boolean,
+	uploading: boolean,
 }
 
 class App extends React.Component<{}, IState> {
@@ -146,6 +147,8 @@ class App extends React.Component<{}, IState> {
 			chatOpen: false,
 			loginOpen: false,
 			isDark: false,
+			cameraLoginFail: false,
+			uploading: false,
 		}     
 		
 		this.fetchAudio("")
@@ -158,13 +161,15 @@ class App extends React.Component<{}, IState> {
 		this.onCloseChatModal= this.onCloseChatModal.bind(this)
 		this.onLoginCloseModal = this.onLoginCloseModal.bind(this)
 		this.changeTheme = this.changeTheme.bind(this)
+	
 	}
 
 	private changeTheme() {
         this.setState({
             isDark: !(this.state.isDark)
         })
-    }
+	}
+	
 
 	public render() {
 		const { openUpload, chatOpen, loginOpen, authenticated, } = this.state;
@@ -255,6 +260,42 @@ class App extends React.Component<{}, IState> {
 							</div>
 					</div>
 				</Modal>
+				<div>
+					<Dialog
+						open={this.state.cameraLoginFail}
+						TransitionComponent={Transition}
+						onClose={this.loginAlertClose}
+						aria-labelledby="alert-dialog-slide-title"
+						aria-describedby="alert-dialog-slide-description">
+						<DialogTitle id="alert-dialog-slide-title">{"Facial Recognition Failed"} </DialogTitle>
+						<DialogContent>
+						<DialogContentText id="alert-dialog-slide-description">
+						Sorry, the facial authentication system does not recognise you.
+						</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+						<Button onClick={this.loginAlertClose} color="primary"> OK </Button>
+						</DialogActions>
+					</Dialog>
+                </div>
+				<div>
+					<Dialog
+						open={this.state.uploading}
+						TransitionComponent={Transition}
+						onClose={this.uploadAlertClose}
+						aria-labelledby="alert-dialog-slide-title"
+						aria-describedby="alert-dialog-slide-description">
+						<DialogTitle id="alert-dialog-slide-title">{"Uploading"} </DialogTitle>
+						<DialogContent>
+						<DialogContentText id="alert-dialog-slide-description">
+						The page will refresh after uploading is completed
+						</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+						<Button onClick={this.uploadAlertClose} color="primary"> OK </Button>
+						</DialogActions>
+					</Dialog>
+                </div>
 			</div>
 			);
 		} else {
@@ -343,6 +384,42 @@ class App extends React.Component<{}, IState> {
 							</div>
 						</div>
 					</Modal>
+					<div>
+						<Dialog
+							open={this.state.cameraLoginFail}
+							TransitionComponent={Transition}
+							onClose={this.loginAlertClose}
+							aria-labelledby="alert-dialog-slide-title"
+							aria-describedby="alert-dialog-slide-description">
+							<DialogTitle id="alert-dialog-slide-title">{"Facial Recognition Failed"} </DialogTitle>
+							<DialogContent>
+							<DialogContentText id="alert-dialog-slide-description">
+							Sorry, the facial authentication system does not recognise you.
+							</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+							<Button onClick={this.loginAlertClose} color="primary"> OK </Button>
+							</DialogActions>
+						</Dialog>
+					</div>
+					<div>
+					<Dialog
+						open={this.state.uploading}
+						TransitionComponent={Transition}
+						onClose={this.uploadAlertClose}
+						aria-labelledby="alert-dialog-slide-title"
+						aria-describedby="alert-dialog-slide-description">
+						<DialogTitle id="alert-dialog-slide-title">{"Uploading"} </DialogTitle>
+						<DialogContent>
+						<DialogContentText id="alert-dialog-slide-description">
+						The page will refresh after uploading is completed
+						</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+						<Button onClick={this.uploadAlertClose} color="primary"> OK </Button>
+						</DialogActions>
+					</Dialog>
+                </div>
 				</div>
 				);
 		}
@@ -420,6 +497,9 @@ class App extends React.Component<{}, IState> {
 
 	// POST audio
 	private uploadAudio() {
+		this.setState({
+			uploading: true
+		})
 		const titleInput = document.getElementById("audio-title-input") as HTMLInputElement
 		const tagInput = document.getElementById("audio-tag-input") as HTMLInputElement
 		const audioFile = this.state.uploadFileList[0]
@@ -447,8 +527,7 @@ class App extends React.Component<{}, IState> {
 				// Error State
 				alert(response.statusText)
 			} else {
-				location.reload()
-				
+				// console.log(response)
 			}
 		  })
 	}
@@ -492,7 +571,8 @@ class App extends React.Component<{}, IState> {
 							this.setState({authenticated: true})
 							this.setState({ loginOpen: false });
 						} else {
-							this.setState({authenticated: false})
+							this.setState({authenticated: false,
+							cameraLoginFail: true})
 							
 						}
 					})
@@ -500,6 +580,17 @@ class App extends React.Component<{}, IState> {
 				}
 			})
 	}
+
+	private loginAlertClose = () => {
+		this.setState({ cameraLoginFail: false });
+	};
+
+	private uploadAlertClose = () => {
+		this.setState({ uploading: false });
+		location.reload()
+	};
 }
+
+
 
 export default App;

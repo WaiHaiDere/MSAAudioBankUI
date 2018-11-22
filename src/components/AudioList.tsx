@@ -6,10 +6,10 @@ interface IProps {
     
 }
 
-export default class AudioList extends React.Component<IProps, {}> {
+
+export default class AudioList extends React.Component<IProps, {}                                                                           > {
     constructor(props: any) {
         super(props)   
-        
     }
 
 	public render() {
