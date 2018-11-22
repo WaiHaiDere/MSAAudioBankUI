@@ -1,11 +1,26 @@
 body{
-  background-color:#a3a3a3;
+  /* background-color:#a3a3a3; */
   font-family: Helvetica;
+}
+
+.main-page-light {
+  background-color: #fff;
+}
+
+.main-page-dark {
+  background-color: #a3a3a3;
 }
 
 /* Header */
 .header-wrapper {
   background-color: #757575;
+  border-bottom: 1px solid #111111; 
+  width: 100%;
+  height: 60px;
+}
+
+.header-wrapper-light {
+  background-color: #0077ff;
   border-bottom: 1px solid #111111;
   width: 100%;
   height: 60px;
@@ -39,15 +54,7 @@ body{
   justify-content: left;
   font-weight: normal;
   font-size: 18px;
-}
-
-.audio-img {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #eeeeee;
-  overflow: hidden;
+  width: 300px;
 }
 
 .audio-img img {
@@ -63,6 +70,8 @@ body{
   font-weight: normal;
   font-size: 15px;
   margin-top: 0px;
+  width: 300px;
+
 }
 
 .audio-done-button {
@@ -72,14 +81,14 @@ body{
   font-weight: normal;
   font-size: 20px;
   margin-top: -15px;
-  padding-left: 30px;  
+  padding-left: 15px;  
 
 }
 
 .btn-action{
   font-family: "Lucida Console", Monaco, monospace;
   background-color:#2600ff;
-  border-color: #2600ff;
+  border-color: #0077ff;
   height:40px;
   margin-right: 10px;
   font-size:18px;
@@ -109,6 +118,7 @@ body{
   height: calc(100vh - 450px);
   overflow-y: scroll;
   cursor: pointer;
+  width: 1140px;
 }
 
 .search-button:hover {
@@ -147,11 +157,15 @@ body{
 }
 
 .audio-player{
-  background-color: #a3a3a3;
-  fill: #2600ff;
+  background-color: #8d8d8d;
   float: left;
   width: 450px;
-  
+}
+
+.audio-player-light{
+  background-color: #3d89ec;
+  float: left;
+  width: 450px;
 }
 .audio-container {
   text-align: center;
@@ -161,11 +175,21 @@ body{
 
 .audio-details {
   float: left;
-  padding-right: 50px;
+  padding-right: 10px;
 }
 
 .footer {
   background-color: #8d8d8d;
+  border-top: 1px solid #111111;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100px;
+}
+
+.footer-light {
+  background-color: #3d89ec;
   border-top: 1px solid #111111;
   position: fixed;
   left: 0;
@@ -185,3 +209,6 @@ body{
   margin-left: 15px;
 }
 
+.theme-switch{
+  float: left;
+}

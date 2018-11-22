@@ -9,21 +9,32 @@ import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import SearchByTag from './components/SearchByTag';
 import Button from '@material-ui/core/Button';
+import LiveHelpIcon from '@material-ui/icons/LiveHelpSharp';
+import Switch from '@material-ui/core/Switch';
 
 
 const chatBotTheme = {
 	background: '#f5f8fb',
 	fontFamily: "Lucida Console",
-	headerBgColor: '#2600ff',
+	headerBgColor: '#3f51b5',
 	headerFontColor: '#fff',
 	headerFontSize: '15px',
-	botBubbleColor: '#2600ff',
+	botBubbleColor: '#3f51b5',
 	botFontColor: '#fff',
 	userBubbleColor: '#fff',
-	userFontColor: '#a3a3a3',
-	
+	userFontColor: '#000000',
   };
-
+  const chatBotLightTheme = {
+	background: '#f5f8fb',
+	fontFamily: "Lucida Console",
+	headerBgColor: '#0077ff',
+	headerFontColor: '#fff',
+	headerFontSize: '15px',
+	botBubbleColor: '#0077ff',
+	botFontColor: '#fff',
+	userBubbleColor: '#fff',
+	userFontColor: '#000000',
+  };
   const chatSteps=[
 	{
 		id: '1',
@@ -36,6 +47,8 @@ const chatBotTheme = {
 		{ value: 1, label: 'What is this website for?', trigger: '4' },
 		{ value: 2, label: 'How do I upload?', trigger: '3' },
 		{ value: 3, label: 'How do I download a file?', trigger: '5' },
+		{ value: 4, label: 'I can\'t use the Edit or Delete buttons', trigger: '10' },
+
 		],
 	},
 	{
@@ -78,6 +91,11 @@ const chatBotTheme = {
 			{ value: 2, label: 'Thank you', trigger: '1' },
 		],
 	},
+	{
+		id: '10',
+		message: 'That means you have not logged in. Please use the button at the top left to log in.',
+		trigger: '1',
+	},
 ]
 
 interface IState {
@@ -90,6 +108,7 @@ interface IState {
 	predictionResult: any,
 	chatOpen: boolean,
 	loginOpen: boolean,
+	isDark: boolean,
 	
 	// recordOpen: any,
 }
@@ -107,6 +126,7 @@ class App extends React.Component<{}, IState> {
 			predictionResult: null,
 			chatOpen: false,
 			loginOpen: false,
+			isDark: false,
 			
 		}     
 		
@@ -119,89 +139,186 @@ class App extends React.Component<{}, IState> {
 		this.skipAuthenticate = this.skipAuthenticate.bind(this)
 		this.onCloseChatModal= this.onCloseChatModal.bind(this)
 		this.onLoginCloseModal = this.onLoginCloseModal.bind(this)
+		this.changeTheme = this.changeTheme.bind(this)
 	}
 
-	public render() {
-		const { openUpload, chatOpen, loginOpen, authenticated} = this.state;
-		return (
-		<div>
-			<div className="header-wrapper">
-				<div className="container header">
-				<div className="title-container">
-					<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp; 
-					{(!authenticated) ?
-					<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.onLoginOpenModal}>Login</Button>
-					: ""}
-					{(authenticated) ?
-					<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.logOut}>Log Out</Button>
-					: ""}
-				</div>
-					<SearchByTag searchByTag={this.fetchAudio} />
-					<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
-				</div>
-			</div>
-			<div className="container">
-				<div className="row">
-					<div className="col-7">
-				
-					
-					</div>
-					<div className="col-5">
-						<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} />
-					</div>
-				</div>
-			</div>
-			<div className = "footer">
-				<div className="botButton">
-				<Button className="botButton" variant="fab" onClick={this.onOpenChatModal} color="primary"></Button>&nbsp;
-				</div>
-				<div className="footerInfo">
-				<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} />
-				</div>
-				
-			</div>
-			<Modal open={openUpload} onClose={this.onCloseModal}>
-				<form>
-					<div className="form-group">
-						<label>Audio Title</label>
-						<input type="text" className="form-control" id="audio-title-input" placeholder="Enter Title" />
-						<small className="form-text text-muted">You can edit any audio later</small>
-					</div>
-					<div className="form-group">
-						<label>Tag</label>
-						<input type="text" className="form-control" id="audio-tag-input" placeholder="Enter Tag" />
-						<small className="form-text text-muted">Tag is used for search</small>
-					</div>
-					<div className="form-group">
-						<label>Audio</label>
-						<input type="file" onChange={this.handleFileUpload} className="form-control-file" id="audio-image-input" />
-					</div>
+	private changeTheme() {
+        this.setState({
+            isDark: !(this.state.isDark)
+        })
+    }
 
-					<button type="button" className="btn" onClick={this.uploadAudio}>Upload</button>
-				</form>
-			</Modal>
-			<Modal open={chatOpen} onClose={this.onCloseChatModal}>
-			<div>
-							<ThemeProvider theme={chatBotTheme}>
-							<ChatBot botDelay='400'
-								steps={chatSteps}
+	public render() {
+		const { openUpload, chatOpen, loginOpen, authenticated, } = this.state;
+		if(this.state.isDark){
+			return (
+			<div className="main-page-dark">
+				<div className="header-wrapper">
+					
+					<div className="container header">
+						<div className="theme-switch">
+							<Switch
+								checked={this.state.isDark}
+								onChange={this.changeTheme}
+								value="isDark"
+								color="primary"
 							/>
-							</ThemeProvider>
-			</div>
-			</Modal>
-			<Modal open={loginOpen} onClose={this.onLoginCloseModal} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
-				<Webcam
-					audio={false}
-					screenshotFormat="image/jpeg"
-					ref={this.state.refCamera}
-				/>
-				<div className="row nav-row">
-					<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
-					<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+						</div>
+						<div className="title-container">
+							<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp; 
+							{(!authenticated) ?
+							<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.onLoginOpenModal}>Login</Button>
+							: ""}
+							{(authenticated) ?
+							<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.logOut}>Log Out</Button>
+							: ""}
+						</div>
+						<SearchByTag searchByTag={this.fetchAudio} />
+						<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
+					</div>
 				</div>
-			</Modal>
-		</div>
-		);
+				<div className="container">
+					<div className="row">
+							<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} />
+						
+					</div>
+				</div>
+				<div className = "footer">
+					<div className="botButton">
+					<Button className="botButton" variant="fab" onClick={this.onOpenChatModal} color="primary"><LiveHelpIcon /></Button>&nbsp;
+					</div>
+					<div className="footerInfo">
+					<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} isDark={this.state.isDark} />
+					</div>
+					
+				</div>
+				<Modal open={openUpload} onClose={this.onCloseModal}>
+					<form>
+						<div className="form-group">
+							<label>Audio Title</label>
+							<input type="text" className="form-control" id="audio-title-input" placeholder="Enter Title" />
+							<small className="form-text text-muted">You can edit any audio later</small>
+						</div>
+						<div className="form-group">
+							<label>Tag</label>
+							<input type="text" className="form-control" id="audio-tag-input" placeholder="Enter Tag" />
+							<small className="form-text text-muted">Tag is used for search</small>
+						</div>
+						<div className="form-group">
+							<label>Audio</label>
+							<input type="file" onChange={this.handleFileUpload} className="form-control-file" id="audio-image-input" />
+						</div>
+
+						<button type="button" className="btn" onClick={this.uploadAudio}>Upload</button>
+					</form>
+				</Modal>
+				<Modal open={chatOpen} onClose={this.onCloseChatModal}>
+				<div>
+								<ThemeProvider theme={chatBotTheme}>
+								<ChatBot botDelay='400'
+									steps={chatSteps}
+								/>
+								</ThemeProvider>
+				</div>
+				</Modal>
+				<Modal open={loginOpen} onClose={this.onLoginCloseModal} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
+					<Webcam
+						audio={false}
+						screenshotFormat="image/jpeg"
+						ref={this.state.refCamera}
+					/>
+					<div className="row nav-row">
+						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
+						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+					</div>
+				</Modal>
+			</div>
+			);
+		} else {
+			return (
+				<div className="main-page-light">
+					<div className="header-wrapper-light">
+						<div className="container header">
+							<div className="theme-switch">
+								<Switch
+									// checked={this.state.isDark}
+									onChange={this.changeTheme}
+									value="isDark"
+									color="primary"
+								/>
+							</div>
+							<div className="title-container">
+								<img src={AudioBankLogo} height='40'/>&nbsp; MSA Phase 2 Audio Bank &nbsp; 
+								{(!authenticated) ?
+								<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="default" onClick= {this.onLoginOpenModal}>Login</Button>
+								: ""}
+								{(authenticated) ?
+								<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="default" onClick= {this.logOut}>Log Out</Button>
+								: ""}
+							</div>
+							<SearchByTag searchByTag={this.fetchAudio} />
+							<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="default" onClick={this.onOpenModal}>Add Audio</Button>
+						</div>
+					</div>
+					<div className="container">
+						<div className="row">
+								<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} />
+							
+						</div>
+					</div>
+					<div className = "footer-light">
+						<div className="botButton">
+						<Button className="botButton" variant="fab" onClick={this.onOpenChatModal} color="default"><LiveHelpIcon /></Button>&nbsp;
+						</div>
+						<div className="footerInfo">
+						<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} isDark={this.state.isDark}/>
+						</div>
+						
+					</div>
+					<Modal open={openUpload} onClose={this.onCloseModal}>
+						<form>
+							<div className="form-group">
+								<label>Audio Title</label>
+								<input type="text" className="form-control" id="audio-title-input" placeholder="Enter Title" />
+								<small className="form-text text-muted">You can edit any audio later</small>
+							</div>
+							<div className="form-group">
+								<label>Tag</label>
+								<input type="text" className="form-control" id="audio-tag-input" placeholder="Enter Tag" />
+								<small className="form-text text-muted">Tag is used for search</small>
+							</div>
+							<div className="form-group">
+								<label>Audio</label>
+								<input type="file" onChange={this.handleFileUpload} className="form-control-file" id="audio-image-input" />
+							</div>
+	
+							<button type="button" className="btn" onClick={this.uploadAudio}>Upload</button>
+						</form>
+					</Modal>
+					<Modal open={chatOpen} onClose={this.onCloseChatModal}>
+					<div>
+									<ThemeProvider theme={chatBotLightTheme}>
+									<ChatBot botDelay='400'
+										steps={chatSteps}
+									/>
+									</ThemeProvider>
+					</div>
+					</Modal>
+					<Modal open={loginOpen} onClose={this.onLoginCloseModal} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
+						<Webcam
+							audio={false}
+							screenshotFormat="image/jpeg"
+							ref={this.state.refCamera}
+						/>
+						<div className="row nav-row">
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
+							<p className="spacing">ss</p>
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
+						</div>
+					</Modal>
+				</div>
+				);
+		}
 	}
 
 	private onOpenChatModal =() => {
