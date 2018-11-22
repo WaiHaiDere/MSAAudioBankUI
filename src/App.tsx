@@ -48,6 +48,7 @@ const chatBotTheme = {
 		{ value: 2, label: 'How do I upload?', trigger: '3' },
 		{ value: 3, label: 'How do I download a file?', trigger: '5' },
 		{ value: 4, label: 'I can\'t use the Edit or Delete buttons', trigger: '10' },
+		{ value: 5, label: 'That will be all, thank you', trigger: '13' },
 
 		],
 	},
@@ -59,12 +60,12 @@ const chatBotTheme = {
 	{
 		id: '4',
 		message: 'This app is made for the submission for MSA 2018',
-		trigger: '1',
+		trigger: '12',
 	},
 	{
 		id: '5',
 		message: 'After selecting a file from the table on the right, you can press the "Download" button to download the file',
-		trigger: '1',
+		trigger: '12',
 	},
 	{
 		id: '6',
@@ -74,13 +75,13 @@ const chatBotTheme = {
 	{
 		id: '7',
 		message: 'After selecting a file from the table on the right, press the "Edit" button to change the Title or Tag of the file',
-		trigger: '1',
+		trigger: '12',
 	},
 	{
 		id:'8',
 		options: [
 			{ value: 1, label: 'I entered wrong information!', trigger: '6' },
-			{ value: 2, label: 'Thank you', trigger: '1' },
+			{ value: 2, label: 'Thank you', trigger: '11' },
 		],
 
 	},
@@ -88,14 +89,31 @@ const chatBotTheme = {
 		id:'9',
 		options: [
 			{ value: 1, label: 'How do I do that?', trigger: '7' },
-			{ value: 2, label: 'Thank you', trigger: '1' },
+			{ value: 2, label: 'Thank you', trigger: '11' },
 		],
 	},
 	{
 		id: '10',
 		message: 'That means you have not logged in. Please use the button at the top left to log in.',
-		trigger: '1',
+		trigger: '12',
 	},
+	{
+		id: '11',
+		message: 'You\t welcome!',
+		trigger: '12',
+	},
+	{
+		id: '12',
+		message: 'Is there anything else I can help you with?',
+		trigger: '2',
+	},
+	{
+		id: '13',
+		message: 'Goodbye',
+		end: true,
+	},
+	
+
 ]
 
 interface IState {
