@@ -36,10 +36,10 @@ export default class AudioDetail extends React.Component<IProps, IState> {
             return (
                 <div className="container audio-wrapper">
                     <div className="audio-details">
-                        <div className="row audio-heading">
+                        <div className="audio-heading">
                             <b>{currentAudio.title}</b>&nbsp; ({currentAudio.tags})
                         </div>
-                        <div className="row audio-date">
+                        <div className="audio-date">
                             {currentAudio.uploaded}
                         </div>
                     </div>
@@ -49,7 +49,7 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                         src= {currentAudio.url}
                         controls />
                     </div>&nbsp;
-                    <div className="row audio-done-button">
+                    <div className="audio-done-button">
                         <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp;
                         <p className="spacing">s</p>&nbsp;
                         { (authenticated) ?
@@ -87,10 +87,10 @@ export default class AudioDetail extends React.Component<IProps, IState> {
             return (
                 <div className="container audio-wrapper">
                     <div className="audio-details">
-                        <div className="row audio-heading">
+                        <div className="audio-heading">
                             <b>{currentAudio.title}</b>&nbsp; ({currentAudio.tags})
                         </div>
-                        <div className="row audio-date">
+                        <div className="audio-date">
                             {currentAudio.uploaded}
                         </div>
                     </div>
@@ -100,7 +100,7 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                         src= {currentAudio.url}
                         controls />
                     </div>&nbsp;
-                    <div className="row audio-done-button">
+                    <div className="audio-done-button">
                         <Button className="btn btn-primary btn-action" variant="contained" color="default" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp;
                         <p className="spacing">s</p>&nbsp;
                         { (authenticated) ?

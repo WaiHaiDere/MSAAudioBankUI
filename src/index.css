@@ -115,7 +115,7 @@ body{
 
 .audio-list-table {
   margin-top: 20px;
-  height: calc(100vh - 450px);
+  height: 450px;
   overflow-y: scroll;
   cursor: pointer;
   width: 1140px;
@@ -211,4 +211,12 @@ body{
 
 .theme-switch{
   float: left;
+}
+
+.row {
+  height: 850px;
+}
+
+.nav-row{
+  width: 480px; 
 }

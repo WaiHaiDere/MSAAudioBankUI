@@ -227,8 +227,8 @@ class App extends React.Component<{}, IState> {
 						screenshotFormat="image/jpeg"
 						ref={this.state.refCamera}
 					/>
-					<div className="row nav-row">
-						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
+					<div className="nav-row">
+						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>&nbsp;
 						<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
 					</div>
 				</Modal>
@@ -310,9 +310,8 @@ class App extends React.Component<{}, IState> {
 							screenshotFormat="image/jpeg"
 							ref={this.state.refCamera}
 						/>
-						<div className="row nav-row">
-							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button>
-							<p className="spacing">ss</p>
+						<div className="nav-row">
+							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.authenticate}>Login</Button> &nbsp;
 							<Button className="btn btn-primary bottom-button" variant="contained" color="primary" onClick={this.skipAuthenticate}>Skip For Now</Button>
 						</div>
 					</Modal>

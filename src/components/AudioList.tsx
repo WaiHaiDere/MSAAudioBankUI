@@ -15,7 +15,7 @@ export default class AudioList extends React.Component<IProps, {}> {
 	public render() {
 		return (
 
-                <div className="row audio-list-table">
+                <div className="audio-list-table">
                     <table className="table table-striped">
                         <tbody>
                             {this.createTable()}
