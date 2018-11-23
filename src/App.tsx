@@ -195,6 +195,8 @@ class App extends React.Component<{}, IState> {
 							{(authenticated) ?
 							<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="primary" onClick= {this.logOut}>Log Out</Button>
 							: ""}
+							<Button  size="small" color="primary" onClick={this.logIn}>Dev</Button>
+								{/* This button is to authenticate the marker without having to use fb or camera */}
 						</div>
 						<SearchByTag searchByTag={this.fetchAudio} isDark = {this.state.isDark} />
 						<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="primary" onClick={this.onOpenModal}>Add Audio</Button>
@@ -319,6 +321,9 @@ class App extends React.Component<{}, IState> {
 								{(authenticated) ?
 								<Button className="btn btn-primary btn-action btn-add" id="loginButton" variant ="contained" color="default" onClick= {this.logOut}>Log Out</Button>
 								: ""}
+								<Button  size="small" color="primary" onClick={this.logIn}>Dev</Button>
+								{/* This button is to authenticate the marker without having to use fb or camera */}
+
 							</div>
 							<SearchByTag searchByTag={this.fetchAudio} isDark = {this.state.isDark} />
 							<Button className="btn btn-primary btn-action btn-add" id="searchButton" variant="contained" color="default" onClick={this.onOpenModal}>Add Audio</Button>
@@ -438,6 +443,10 @@ class App extends React.Component<{}, IState> {
 	private logOut =() => {
 		this.setState({authenticated: false});
 	}
+
+	private logIn =() => {
+		this.setState({authenticated: true});
+	}
 	private onCloseChatModal =() => {
 		this.setState({chatOpen: false})
 	}
@@ -538,6 +547,7 @@ class App extends React.Component<{}, IState> {
 		this.getFaceRecognitionResult(screenshot);
 		
 	}
+
 	
 	private skipAuthenticate(){
 		this.setState({ loginOpen: false });
