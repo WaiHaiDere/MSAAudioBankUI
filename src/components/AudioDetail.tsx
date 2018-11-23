@@ -2,6 +2,7 @@ import * as React from "react";
 import Modal from 'react-responsive-modal';
 import ReactAudioPlayer from 'react-audio-player';
 import Button from '@material-ui/core/Button';
+import {FacebookShareButton, FacebookIcon} from 'react-share';
 
 
 
@@ -31,6 +32,8 @@ export default class AudioDetail extends React.Component<IProps, IState> {
         const authenticated = this.props.authenticated
         const isDark = this.props.isDark
         const { open } = this.state;
+        const shareURL = "https://www.facebook.com/sharer/sharer.php?u=https%3A//msaaudiobank.azurewebsites.net/"
+        const shareQuote= "MSA Audio Bank"
 
         if(isDark){
             return (
@@ -50,7 +53,15 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                         controls />
                     </div>&nbsp;
                     <div className="audio-done-button">
-                        <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp;
+                     <FacebookShareButton
+                        url={shareURL}
+                        quote={shareQuote}
+                        className="Demo__some-network__share-button">
+                        <FacebookIcon
+                        size={32}
+                        round />
+                    </FacebookShareButton>
+                        {/* <Button className="btn btn-primary btn-action" variant="contained" color="primary" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp; */}
                         <p className="spacing">s</p>&nbsp;
                         { (authenticated) ?
                         <div className="conditional-buttons">
@@ -101,7 +112,15 @@ export default class AudioDetail extends React.Component<IProps, IState> {
                         controls />
                     </div>&nbsp;
                     <div className="audio-done-button">
-                        <Button className="btn btn-primary btn-action" variant="contained" color="default" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp;
+                        <FacebookShareButton
+                            url={shareURL}
+                            quote={shareQuote}
+                            className="Demo__some-network__share-button">
+                            <FacebookIcon
+                            size={32}
+                            round />
+                        </FacebookShareButton>
+                        {/* <Button className="btn btn-primary btn-action" variant="contained" color="default" onClick={this.downloadAudio.bind(this, currentAudio.url)}>Download </Button>&nbsp; */}
                         <p className="spacing">s</p>&nbsp;
                         { (authenticated) ?
                         <div className="conditional-buttons">
@@ -148,10 +167,10 @@ export default class AudioDetail extends React.Component<IProps, IState> {
 		this.setState({ open: false });
 	};
 
-    // Open audio image in new tab
-    private downloadAudio(url: any) {
-        window.open(url);
-    }
+    // // Open audio image in new tab
+    // private downloadAudio(url: any) {
+    //     window.open(url);
+    // }
 
     // DELETE audio
     private deleteAudio(id: any) {

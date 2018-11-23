@@ -67,7 +67,7 @@ const chatBotTheme = {
 	},
 	{
 		id: '5',
-		message: 'After selecting a file from the table on the right, you can press the "Download" button to download the file',
+		message: 'After selecting a file from the table on the right, press the 3 dots in the audio player to download',
 		trigger: '12',
 	},
 	{
