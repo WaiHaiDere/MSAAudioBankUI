@@ -292,7 +292,6 @@ class App extends React.Component<{}, IState> {
 					<Dialog
 						open={this.state.uploading}
 						TransitionComponent={Transition}
-						onClose={this.uploadAlertClose}
 						aria-labelledby="alert-dialog-slide-title"
 						aria-describedby="alert-dialog-slide-description">
 						<DialogTitle id="alert-dialog-slide-title">{"Uploading"} </DialogTitle>
@@ -302,7 +301,6 @@ class App extends React.Component<{}, IState> {
 						</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-						<Button onClick={this.uploadAlertClose} color="primary"> OK </Button>
 						</DialogActions>
 					</Dialog>
                 </div>
@@ -427,7 +425,7 @@ class App extends React.Component<{}, IState> {
 					<Dialog
 						open={this.state.uploading}
 						TransitionComponent={Transition}
-						onClose={this.uploadAlertClose}
+					
 						aria-labelledby="alert-dialog-slide-title"
 						aria-describedby="alert-dialog-slide-description">
 						<DialogTitle id="alert-dialog-slide-title">{"Uploading"} </DialogTitle>
@@ -437,7 +435,7 @@ class App extends React.Component<{}, IState> {
 						</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-						<Button onClick={this.uploadAlertClose} color="primary"> OK </Button>
+						
 						</DialogActions>
 					</Dialog>
                 </div>
@@ -550,7 +548,10 @@ class App extends React.Component<{}, IState> {
 				// Error State
 				alert(response.statusText)
 			} else {
-				// console.log(response)
+				this.setState({
+					uploading: false,
+				})
+				location.reload();
 			}
 		  })
 	}
@@ -609,10 +610,6 @@ class App extends React.Component<{}, IState> {
 		this.setState({ cameraLoginFail: false });
 	};
 
-	private uploadAlertClose = () => {
-		this.setState({ uploading: false });
-		location.reload()
-	};
 }
 
 
