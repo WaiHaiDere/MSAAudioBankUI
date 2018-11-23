@@ -158,7 +158,6 @@ class App extends React.Component<{}, IState> {
 		this.uploadAudio = this.uploadAudio.bind(this)
 		this.authenticate = this.authenticate.bind(this)
 		this.skipAuthenticate = this.skipAuthenticate.bind(this)
-		this.onCloseChatModal= this.onCloseChatModal.bind(this)
 		this.onLoginCloseModal = this.onLoginCloseModal.bind(this)
 		this.changeTheme = this.changeTheme.bind(this)
 	
@@ -205,12 +204,21 @@ class App extends React.Component<{}, IState> {
 				<div className="container">
 					<div className="row">
 							<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} />
+							<div className="chatbot-container">
+							{chatOpen &&
+								<ThemeProvider theme={chatBotTheme}>
+								<ChatBot botDelay='400'
+									steps={chatSteps}
+								/>
+								</ThemeProvider>
+							}
+							</div>
 						
 					</div>
 				</div>
 				<div className = "footer">
 					<div className="botButton">
-					<Button className="botButton" variant="fab" onClick={this.onOpenChatModal} color="primary"><LiveHelpIcon /></Button>&nbsp;
+					<Button className="botButton" variant="fab" onClick={this.toggleChatModal} color="primary"><LiveHelpIcon /></Button>&nbsp;
 					</div>
 					<div className="footerInfo">
 					<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} isDark={this.state.isDark} />
@@ -237,7 +245,7 @@ class App extends React.Component<{}, IState> {
 						<Button variant="contained" color="primary" type="button" className="btn" onClick={this.uploadAudio}>Upload</Button>
 					</form>
 				</Modal>
-				<Modal open={chatOpen} onClose={this.onCloseChatModal}>
+				{/* <Modal open={chatOpen} onClose={this.onCloseChatModal}>
 				<div>
 								<ThemeProvider theme={chatBotTheme}>
 								<ChatBot botDelay='400'
@@ -245,7 +253,7 @@ class App extends React.Component<{}, IState> {
 								/>
 								</ThemeProvider>
 				</div>
-				</Modal>
+				</Modal> */}
 				<Modal open={loginOpen} onClose={this.onLoginCloseModal} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
 					<Webcam
 						audio={false}
@@ -332,12 +340,20 @@ class App extends React.Component<{}, IState> {
 					<div className="container">
 						<div className="row">
 								<AudioList audio={this.state.audio} selectNewAudio={this.selectNewAudio} />
-							
+								<div className="chatbot-container">
+								{chatOpen &&
+									<ThemeProvider theme={chatBotLightTheme}>
+									<ChatBot botDelay='400'
+										steps={chatSteps}
+									/>
+									</ThemeProvider>
+								}
+							</div>
 						</div>
 					</div>
 					<div className = "footer-light">
 						<div className="botButton">
-						<Button className="botButton" variant="fab" onClick={this.onOpenChatModal} color="default"><LiveHelpIcon /></Button>&nbsp;
+						<Button className="botButton" variant="fab" onClick={this.toggleChatModal} color="default"><LiveHelpIcon /></Button>&nbsp;
 						</div>
 						<div className="footerInfo">
 						<AudioDetail currentAudio={this.state.currentAudio} authenticated = {this.state.authenticated} isDark={this.state.isDark}/>
@@ -364,7 +380,7 @@ class App extends React.Component<{}, IState> {
 							<Button variant="contained" color="primary" type="button" className="btn" onClick={this.uploadAudio}>Upload</Button>
 						</form>
 					</Modal>
-					<Modal open={chatOpen} onClose={this.onCloseChatModal}>
+					{/* <Modal open={chatOpen} onClose={this.onCloseChatModal}>
 					<div>
 									<ThemeProvider theme={chatBotLightTheme}>
 									<ChatBot botDelay='400'
@@ -372,7 +388,7 @@ class App extends React.Component<{}, IState> {
 									/>
 									</ThemeProvider>
 					</div>
-					</Modal>
+					</Modal> */}
 					<Modal open={loginOpen} onClose={this.onLoginCloseModal} closeOnOverlayClick={false} showCloseIcon={false} center={true}>
 						<Webcam
 							audio={false}
@@ -436,8 +452,8 @@ class App extends React.Component<{}, IState> {
 			this.setState({loginOpen: false});
 		}
 	}
-	private onOpenChatModal =() => {
-		this.setState({chatOpen: true})
+	private toggleChatModal =() => {
+		this.setState({chatOpen: !(this.state.chatOpen)})
 	}
 
 	private logOut =() => {
@@ -447,9 +463,7 @@ class App extends React.Component<{}, IState> {
 	private logIn =() => {
 		this.setState({authenticated: true});
 	}
-	private onCloseChatModal =() => {
-		this.setState({chatOpen: false})
-	}
+
 	// Modal open
 	private onOpenModal = () => {
 		this.setState({ openUpload: true });
